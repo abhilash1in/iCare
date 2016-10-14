@@ -38,15 +38,15 @@ public class PrevEntryFragment extends Fragment {
         return view;
     }
 
-   /* public void textViewClick(View v){
+    public void textViewClick(View v){
 
         TextView tv = (TextView)v;
         String msg = tv.getText().toString();
         Intent intent2 = new Intent();
-       // intent2.setClass(getContext(), SingleEntry.class);
+        intent2.setClass(getContext(), ViewEntryActivity.class);
         intent2.putExtra("dept", msg);
         startActivity(intent2);
-    }*/
+    }
 
 
 
