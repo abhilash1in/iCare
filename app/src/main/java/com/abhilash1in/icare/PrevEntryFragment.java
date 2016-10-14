@@ -41,10 +41,10 @@ public class PrevEntryFragment extends Fragment {
     public void textViewClick(View v){
 
         TextView tv = (TextView)v;
-        String msg = tv.getText().toString();
+        String date = tv.getText().toString();
         Intent intent2 = new Intent();
         intent2.setClass(getContext(), ViewEntryActivity.class);
-        intent2.putExtra("dept", msg);
+        intent2.putExtra("date", date);
         startActivity(intent2);
     }
 

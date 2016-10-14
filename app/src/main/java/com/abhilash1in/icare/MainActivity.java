@@ -1,6 +1,7 @@
 package com.abhilash1in.icare;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -19,10 +20,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+// Main
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, DatePickerDialog.OnDateSetListener {
 
@@ -94,7 +97,10 @@ public class MainActivity extends AppCompatActivity
     public void onDateSet(DatePicker view, int year, int month, int day) {
 
         String date = setDateFormat(year, month, day);
-        ((EditText) findViewById(R.id.date_view)).setText(date);
+        Intent intent2 = new Intent();
+        intent2.setClass(this, ViewEntryActivity.class);
+        intent2.putExtra("date", date);
+        startActivity(intent2);
     }
 
 
