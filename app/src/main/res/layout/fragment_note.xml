@@ -1,13 +1,55 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.abhilash1in.icare.NoteFragment">
+    android:id="@+id/relativeLayoutEdit"
 
-    <!-- TODO: Update blank fragment layout -->
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true"
+    tools:context=".MainActivity" >
+
+
+
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="30dp"
+        android:id="@+id/dateTextView"
+        android:textSize="18sp"
+        android:paddingLeft="5dp"
+        android:textColor="#000000"
+        />
 
-</FrameLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scrollView"
+        android:layout_below="@+id/dateTextView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:clipToPadding="false"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp" >
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/bodyEdit"
+            android:inputType="textCapSentences|textImeMultiLine|textMultiLine"
+            android:gravity="start|end"
+            android:ems="10"
+            android:focusableInTouchMode="true"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:hint="Hii! Wassup?"
+            android:textColorHint="#000000"
+            android:background="@android:color/transparent"
+            android:textSize="18sp"
+
+            />
+
+    </ScrollView>
+
+</RelativeLayout>
