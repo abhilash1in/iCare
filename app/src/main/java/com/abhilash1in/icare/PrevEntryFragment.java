@@ -4,9 +4,11 @@ package com.abhilash1in.icare;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -35,19 +37,20 @@ public class PrevEntryFragment extends Fragment {
         // Adapter mapped to listView
         final ListView listView = (ListView) view.findViewById(R.id.prev_entry_list);
         listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position,
+                                    long id) {
+
+                TextView tv = (TextView)view;
+                String date = tv.getText().toString();
+                Intent intent2 = new Intent();
+                intent2.setClass(getContext(), ViewEntryActivity.class);
+                intent2.putExtra("date", date);
+                startActivity(intent2);
+            }
+        });
         return view;
     }
-
-    public void textViewClick(View v){
-
-        TextView tv = (TextView)v;
-        String date = tv.getText().toString();
-        Intent intent2 = new Intent();
-        intent2.setClass(getContext(), ViewEntryActivity.class);
-        intent2.putExtra("date", date);
-        startActivity(intent2);
-    }
-
-
-
 }
