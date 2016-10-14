@@ -1,9 +1,12 @@
 package com.abhilash1in.icare;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
+import android.view.MenuInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,14 +16,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.DatePicker;
+import android.widget.EditText;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, DatePickerDialog.OnDateSetListener {
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -29,13 +38,14 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Diary Entry Saved", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_main, new NoteFragment() ).commit();
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -57,12 +67,13 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-   /* @Override
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -72,22 +83,38 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_calendar) {
+            datePicker();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
-    }*/
+    }
+
+    public void datePicker()
+    {
+        DialogFragment newFragment = new DatePickerFragment();
+        newFragment.show(getSupportFragmentManager(), "datePicker");
+    }
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int day) {
+
+    }
+
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
         if (id == R.id.nav_note) {
-            // Handle the camera action
-        } else if (id == R.id.nav_prev_entry) {
+            fragmentManager.beginTransaction().replace(R.id.content_main, new NoteFragment() ).commit();
+        }
+        else if (id == R.id.nav_prev_entry) {
+            fragmentManager.beginTransaction().replace(R.id.content_main, new PrevEntryFragment() ).commit();
 
         } else if (id == R.id.nav_insights) {
 
