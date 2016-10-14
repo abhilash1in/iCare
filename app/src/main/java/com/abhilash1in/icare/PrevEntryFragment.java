@@ -4,7 +4,6 @@ package com.abhilash1in.icare;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,9 +34,8 @@ public class PrevEntryFragment extends Fragment {
 
         // Adapter mapped to listView
         final ListView listView = (ListView) view.findViewById(R.id.prev_entry_list);
-        listView.setAdapter(adapter);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+       listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position,
                                     long id) {
@@ -51,6 +48,8 @@ public class PrevEntryFragment extends Fragment {
                 startActivity(intent2);
             }
         });
+
+        listView.setAdapter(adapter);
         return view;
     }
 }
