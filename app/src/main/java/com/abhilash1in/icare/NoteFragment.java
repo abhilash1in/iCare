@@ -97,7 +97,7 @@ public class NoteFragment extends Fragment {
         // set current date into textview
        dateTextView.setText(new StringBuilder()
                 // Month is 0 based, just add 1
-                .append(day).append(" ,").append(dd).append("th ").append(monthName).append(" ").append(yy).append(" :")
+                .append(day).append(" , ").append(dd).append(" ").append(monthName).append(" ").append(yy).append(" :")
                 );
 
 

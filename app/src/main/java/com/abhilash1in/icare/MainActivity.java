@@ -138,7 +138,8 @@ public class MainActivity extends AppCompatActivity
         cal.set(Calendar.YEAR, year);
         cal.set(Calendar.MONTH, month);
         cal.set(Calendar.DAY_OF_MONTH, day);
-        SimpleDateFormat df = new SimpleDateFormat("d MMMM yyyy");
+
+        SimpleDateFormat df = new SimpleDateFormat("EEEE , d MMMM yyyy");
         date = df.format(cal.getTime());
         return date;
     }
