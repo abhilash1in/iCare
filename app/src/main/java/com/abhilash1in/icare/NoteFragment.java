@@ -3,6 +3,8 @@ package com.abhilash1in.icare;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -44,6 +46,15 @@ public class NoteFragment extends Fragment {
         bodyEditText=(EditText)view.findViewById(R.id.bodyEdit);
         dateTextView=(TextView)view.findViewById(R.id.dateTextView);
         bodyEditText.requestFocus();
+
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view,"Diary entry saved!",Snackbar.LENGTH_LONG).setAction("Action",null).show();
+                String data=bodyEditText.getText().toString();
+            }
+        });
         final Calendar c = Calendar.getInstance();
          yy = c.get(Calendar.YEAR);
          mm = c.get(Calendar.MONTH);
