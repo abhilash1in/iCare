@@ -93,6 +93,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onDateSet(DatePicker view, int year, int month, int day) {
 
+        String date = setDateFormat(year, month, day);
+        ((EditText) findViewById(R.id.date_view)).setText(date);
     }
 
 
@@ -121,5 +123,17 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    String setDateFormat(int year, int month, int day)
+    {
+        String date = "";
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, year);
+        cal.set(Calendar.MONTH, month);
+        cal.set(Calendar.DAY_OF_MONTH, day);
+        SimpleDateFormat df = new SimpleDateFormat("d MMMM yyyy");
+        date = df.format(cal.getTime());
+        return date;
     }
 }
