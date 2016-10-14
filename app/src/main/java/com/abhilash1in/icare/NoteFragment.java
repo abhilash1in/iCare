@@ -52,14 +52,15 @@ public class NoteFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view,"Diary entry saved!",Snackbar.LENGTH_LONG).setAction("Action",null).show();
-                String data=bodyEditText.getText().toString();
+                String data = bodyEditText.getText().toString();
+                writeToDB();
             }
         });
         final Calendar c = Calendar.getInstance();
          yy = c.get(Calendar.YEAR);
          mm = c.get(Calendar.MONTH);
          dd = c.get(Calendar.DAY_OF_MONTH);
-        dayNum=c.get(Calendar.DAY_OF_WEEK);
+        dayNum = c.get(Calendar.DAY_OF_WEEK);
         Log.d(TAG,"day "+c.get(Calendar.DAY_OF_WEEK));
 
         switch (dayNum) {
@@ -91,7 +92,7 @@ public class NoteFragment extends Fragment {
                 break;
         }
 
-        String monthName=new DateFormatSymbols().getMonths()[mm];
+        String monthName = new DateFormatSymbols().getMonths()[mm];
         Log.d(TAG,"month name  "+monthName);
 
         // set current date into textview
@@ -104,4 +105,7 @@ public class NoteFragment extends Fragment {
         return view;
     }
 
+    public void writeToDB(){
+
+    }
 }

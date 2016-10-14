@@ -18,6 +18,8 @@ public class ViewEntryActivity extends AppCompatActivity {
 
         TextView text = (TextView)findViewById(R.id.text);
 
+        //TODO: set text dynamically
+
 
     }
 }

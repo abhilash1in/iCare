@@ -7,6 +7,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -29,6 +31,8 @@ import java.util.Calendar;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, DatePickerDialog.OnDateSetListener {
 
+    TextView nameTextView, emailTextView;
+    public String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +42,10 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        String name = getIntent().getExtras().getString("name");
+        email = getIntent().getExtras().getString("email");
+
+        Log.d("main" , name + " " + email);
 
 
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -52,6 +60,12 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        nameTextView =(TextView)navigationView.getHeaderView(0).findViewById(R.id.name);
+        emailTextView=(TextView)navigationView.getHeaderView(0).findViewById(R.id.email);
+
+        nameTextView.setText(name);
+        emailTextView.setText(email);
     }
 
     @Override
@@ -121,8 +135,13 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_insights) {
 
         } else if (id == R.id.nav_doc_remark) {
+            fragmentManager.beginTransaction().replace(R.id.content_main, new DoctorAdviceFragment() ).commit();
 
         } else if (id == R.id.nav_logout) {
+            Intent intent2 = new Intent();
+            intent2.setClass(this, SignInActivity.class);
+            intent2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent2);
 
         }
 
@@ -133,14 +152,13 @@ public class MainActivity extends AppCompatActivity
 
     String setDateFormat(int year, int month, int day)
     {
-        String date = "";
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.YEAR, year);
         cal.set(Calendar.MONTH, month);
         cal.set(Calendar.DAY_OF_MONTH, day);
 
         SimpleDateFormat df = new SimpleDateFormat("EEEE , d MMMM yyyy");
-        date = df.format(cal.getTime());
+        String date = df.format(cal.getTime());
         return date;
     }
 }

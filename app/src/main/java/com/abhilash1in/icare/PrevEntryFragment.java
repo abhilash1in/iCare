@@ -21,8 +21,6 @@ import java.util.Calendar;
 public class PrevEntryFragment extends Fragment {
 
 
-    int yy,mm,dd,dayNum;
-
     public PrevEntryFragment() {
         // Required empty public constructor
     }
