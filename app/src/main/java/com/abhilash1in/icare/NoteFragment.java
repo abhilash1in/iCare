@@ -54,6 +54,19 @@ public class NoteFragment extends Fragment {
                 Snackbar.make(view,"Diary entry saved!",Snackbar.LENGTH_LONG).setAction("Action",null).show();
                 String data = bodyEditText.getText().toString();
                 writeToDB();
+
+                Log.d(TAG," data entered : "+bodyEditText.getText().toString());
+                if(!bodyEditText.getText().toString().equals(""))
+                {
+                    Snackbar.make(view,"Diary entry saved!",Snackbar.LENGTH_LONG).setAction("Action",null).show();
+                    String data=bodyEditText.getText().toString();
+                }
+
+                else
+                {
+                    Snackbar.make(view,"Enter something",Snackbar.LENGTH_LONG).setAction("Action",null).show();
+                }
+
             }
         });
         final Calendar c = Calendar.getInstance();
@@ -99,6 +112,7 @@ public class NoteFragment extends Fragment {
        dateTextView.setText(new StringBuilder()
                 // Month is 0 based, just add 1
                 .append(day).append(" , ").append(dd).append(" ").append(monthName).append(" ").append(yy).append(" :")
+                .append(day).append(", ").append(dd).append("th ").append(monthName).append(" ").append(yy).append(" :")
                 );
 
 
