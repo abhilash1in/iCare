@@ -105,29 +105,7 @@ public class InsightsFragment extends Fragment {
         graph.getViewport().setMinY(0);
         graph.getViewport().setYAxisBoundsManual(true);
 
-        angerSeries.setTitle("Anger");
-        angerSeries.setColor(Color.parseColor("#B71C1C"));
-        angerSeries.setDrawDataPoints(true);
-        angerSeries.setDataPointsRadius(6);
-        angerSeries.setThickness(4);
 
-        joySeries.setTitle("Joy");
-        joySeries.setColor(Color.parseColor("#F9A825"));
-        joySeries.setDrawDataPoints(true);
-        joySeries.setDataPointsRadius(6);
-        joySeries.setThickness(4);
-
-        fearSeries.setTitle("Fear");
-        fearSeries.setColor(Color.parseColor("#4CAF50"));
-        fearSeries.setDrawDataPoints(true);
-        fearSeries.setDataPointsRadius(6);
-        fearSeries.setThickness(4);
-
-        sadnessSeries.setTitle("Sadness");
-        sadnessSeries.setColor(Color.parseColor("#0D47A1"));
-        sadnessSeries.setDrawDataPoints(true);
-        sadnessSeries.setDataPointsRadius(6);
-        sadnessSeries.setThickness(4);
 
         return view;
     }
@@ -172,7 +150,12 @@ public class InsightsFragment extends Fragment {
                         }
 
                         angerSeries = new LineGraphSeries<>(angerArray);
-                        graph.addSeries(angerSeries);
+                        angerSeries.setTitle("Anger");
+                        angerSeries.setColor(Color.parseColor("#B71C1C"));
+                        angerSeries.setDrawDataPoints(true);
+                        angerSeries.setDataPointsRadius(6);
+                        angerSeries.setThickness(4);
+
 
                         JSONArray joy = resValues.getJSONArray("joy");
 
@@ -182,7 +165,12 @@ public class InsightsFragment extends Fragment {
                         }
 
                         joySeries = new LineGraphSeries<>(joyArray);
-                        graph.addSeries(joySeries);
+                        joySeries.setTitle("Joy");
+                        joySeries.setColor(Color.parseColor("#F9A825"));
+                        joySeries.setDrawDataPoints(true);
+                        joySeries.setDataPointsRadius(6);
+                        joySeries.setThickness(4);
+
 
                         JSONArray fear = resValues.getJSONArray("fear");
 
@@ -192,7 +180,12 @@ public class InsightsFragment extends Fragment {
                         }
 
                         fearSeries = new LineGraphSeries<>(fearArray);
-                        graph.addSeries(fearSeries);
+                        fearSeries.setTitle("Fear");
+                        fearSeries.setColor(Color.parseColor("#4CAF50"));
+                        fearSeries.setDrawDataPoints(true);
+                        fearSeries.setDataPointsRadius(6);
+                        fearSeries.setThickness(4);
+
 
                         JSONArray sadness = resValues.getJSONArray("sadness");
 
@@ -202,6 +195,16 @@ public class InsightsFragment extends Fragment {
                         }
 
                         sadnessSeries = new LineGraphSeries<>(sadnessArray);
+                        sadnessSeries.setTitle("Sadness");
+                        sadnessSeries.setColor(Color.parseColor("#0D47A1"));
+                        sadnessSeries.setDrawDataPoints(true);
+                        sadnessSeries.setDataPointsRadius(6);
+                        sadnessSeries.setThickness(4);
+
+
+                        graph.addSeries(angerSeries);
+                        graph.addSeries(joySeries);
+                        graph.addSeries(fearSeries);
                         graph.addSeries(sadnessSeries);
                     }
 
