@@ -3,8 +3,11 @@ package com.abhilash1in.icare;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -22,9 +25,64 @@ public class PrevEntryFragment extends Fragment {
 
 
     public PrevEntryFragment() {
-        // Required empty public constructor
+        // Required insights public constructor
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.prev_entry, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    /*@Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_calendar) {
+            datePicker();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void datePicker()
+    {
+        DialogFragment newFragment = new DatePickerFragment();
+        newFragment.show(getActivity().getSupportFragmentManager(), "datePicker");
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int day) {
+
+        String date = setDateFormat(year, month, day);
+        Intent intent2 = new Intent();
+        intent2.setClass(getActivity(), ViewEntryActivity.class);
+        intent2.putExtra("date", date);
+        startActivity(intent2);
+    }
+
+    String setDateFormat(int year, int month, int day)
+    {
+        String date = "";
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, year);
+        cal.set(Calendar.MONTH, month);
+        cal.set(Calendar.DAY_OF_MONTH, day);
+        SimpleDateFormat df = new SimpleDateFormat("d MMMM yyyy");
+        date = df.format(cal.getTime());
+        return date;
+    }*/
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
