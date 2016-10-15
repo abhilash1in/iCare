@@ -11,7 +11,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.DatePicker;
 
@@ -20,7 +19,7 @@ import java.util.Calendar;
 
 // Main
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, DatePickerDialog.OnDateSetListener,
+        implements NavigationView.OnNavigationItemSelectedListener,DatePickerDialog.OnDateSetListener,
          DialogFragmentClass.DoctorRequestListener{
 
 
@@ -61,13 +60,12 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    @Override
+   /* @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.prev_entry, menu);
         return true;
-    }
-
+    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -90,6 +88,7 @@ public class MainActivity extends AppCompatActivity
         DialogFragment newFragment = new DatePickerFragment();
         newFragment.show(getSupportFragmentManager(), "datePicker");
     }
+
     @Override
     public void onDateSet(DatePicker view, int year, int month, int day) {
 
@@ -98,6 +97,18 @@ public class MainActivity extends AppCompatActivity
         intent2.setClass(this, ViewEntryActivity.class);
         intent2.putExtra("date", date);
         startActivity(intent2);
+    }
+
+    String setDateFormat(int year, int month, int day)
+    {
+        String date = "";
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, year);
+        cal.set(Calendar.MONTH, month);
+        cal.set(Calendar.DAY_OF_MONTH, day);
+        SimpleDateFormat df = new SimpleDateFormat("d MMMM yyyy");
+        date = df.format(cal.getTime());
+        return date;
     }
 
 
@@ -129,17 +140,6 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    String setDateFormat(int year, int month, int day)
-    {
-        String date = "";
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.YEAR, year);
-        cal.set(Calendar.MONTH, month);
-        cal.set(Calendar.DAY_OF_MONTH, day);
-        SimpleDateFormat df = new SimpleDateFormat("d MMMM yyyy");
-        date = df.format(cal.getTime());
-        return date;
-    }
 
     @Override
     public void onDialogPositiveClick(DialogFragment dialog) {

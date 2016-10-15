@@ -29,7 +29,7 @@ public class NoteFragment extends Fragment {
     String day;
     static final String TAG="NoteFragment";
     public NoteFragment() {
-        // Required empty public constructor
+        // Required insights public constructor
     }
 
     @Override
