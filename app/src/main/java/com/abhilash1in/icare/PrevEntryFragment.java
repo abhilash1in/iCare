@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -101,6 +102,8 @@ public class PrevEntryFragment extends Fragment {
         // String[] days = { "Saturday", "Friday", "Thursday", "Wednesday", "Tuesday", "Monday", "Sunday"};
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_prev_entry, container, false);
+
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Previous Entries");
         // The adapter is initialised with department names
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), R.layout.single_entry, days);
 
