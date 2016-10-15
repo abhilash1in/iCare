@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,12 +18,27 @@ import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.FormEncodingBuilder;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.text.NumberFormat;
-
 
 public class InsightsFragment extends Fragment {
 
+    final String url = "http://tedxmsrit2016.in:3000/insights";
+    static final String TAG="InsightsFragment";
+    OkHttpClient client;
+    GraphView graph;
+    LineGraphSeries<DataPoint> angerSeries, joySeries, fearSeries, sadnessSeries;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +61,17 @@ public class InsightsFragment extends Fragment {
         View view= inflater.inflate(R.layout.fragment_insights, container, false);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Today's Entry");
 
-        GraphView graph = (GraphView) view.findViewById(R.id.graph);
+
+        client = new OkHttpClient();
+
+        try {
+            retrieveFromDB();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        graph = (GraphView) view.findViewById(R.id.graph);
 
         graph.setTitle("Insights of Past Week");
         graph.setTitleTextSize(40);
@@ -79,43 +105,126 @@ public class InsightsFragment extends Fragment {
         graph.getViewport().setMinY(0);
         graph.getViewport().setYAxisBoundsManual(true);
 
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
-                new DataPoint(1, 0.2),
-                new DataPoint(2, 0.35),
-                new DataPoint(3, 0.7),
-                new DataPoint(4, 0.4),
-                new DataPoint(5, 0.9),
-                new DataPoint(6, 0.6),
-                new DataPoint(7, 0.1)
-        });
-        series.setTitle("Anger");
-        series.setColor(Color.RED);
-        series.setDrawDataPoints(true);
-        series.setDataPointsRadius(6);
-        series.setThickness(4);
 
-        LineGraphSeries<DataPoint> series2 = new LineGraphSeries<>(new DataPoint[] {
-                new DataPoint(1, 0.5),
-                new DataPoint(2, 0.23),
-                new DataPoint(3, 0.56),
-                new DataPoint(4, 0.47),
-                new DataPoint(5, 0.78),
-                new DataPoint(6, 0.38),
-                new DataPoint(7, 0.54)
-        });
-        series2.setTitle("Happiness");
-        series2.setColor(Color.BLUE);
-        series2.setDrawDataPoints(true);
-        series2.setDataPointsRadius(6);
-        series2.setThickness(4);
-
-        graph.addSeries(series2);
-
-        graph.addSeries(series);
 
         return view;
     }
 
+    public void retrieveFromDB(){
+
+        RequestBody formBody = new FormEncodingBuilder()
+                .add("user_id", MainActivity.email )
+                .build();
+        Request request = new Request.Builder()
+                .url(url)
+                .post(formBody)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Request request, IOException e) {
+                Log.d("Failed", e.getMessage());
+            }
+
+            @Override
+            public void onResponse(Response response) throws IOException {
+                Log.d(TAG,"on response");
+
+                if (!response.isSuccessful())
+                    Log.v("error","Code: "+response.code()+", Error message: "+response.message());
+                else
+                {
+                    String JsonString = response.body().string();
+                    Log.d("Success", JsonString);
+                    try
+                    {
+                        JSONObject responseJsonObject = new JSONObject(JsonString);
+                        Log.d(TAG,"response jscon object : "+responseJsonObject);
+
+                        JSONObject resValues = responseJsonObject.getJSONObject("res");
+                        JSONArray anger = resValues.getJSONArray("anger");
+
+                        DataPoint angerArray[] = new DataPoint[anger.length()];
+                        for (int i = 0; i < anger.length(); i++) {
+                            angerArray[i] = new DataPoint(i+1,Double.parseDouble(anger.getString(i)));
+                        }
+
+                        angerSeries = new LineGraphSeries<>(angerArray);
+                        angerSeries.setTitle("Anger");
+                        angerSeries.setColor(Color.parseColor("#B71C1C"));
+                        angerSeries.setDrawDataPoints(true);
+                        angerSeries.setDataPointsRadius(6);
+                        angerSeries.setThickness(4);
+
+
+                        JSONArray joy = resValues.getJSONArray("joy");
+
+                        DataPoint joyArray[] = new DataPoint[joy.length()];
+                        for (int i = 0; i < anger.length(); i++) {
+                            joyArray[i] = new DataPoint(i+1,Double.parseDouble(anger.getString(i)));
+                        }
+
+                        joySeries = new LineGraphSeries<>(joyArray);
+                        joySeries.setTitle("Joy");
+                        joySeries.setColor(Color.parseColor("#F9A825"));
+                        joySeries.setDrawDataPoints(true);
+                        joySeries.setDataPointsRadius(6);
+                        joySeries.setThickness(4);
+
+
+                        JSONArray fear = resValues.getJSONArray("fear");
+
+                        DataPoint fearArray[] = new DataPoint[fear.length()];
+                        for (int i = 0; i < anger.length(); i++) {
+                            fearArray[i] = new DataPoint(i+1,Double.parseDouble(anger.getString(i)));
+                        }
+
+                        fearSeries = new LineGraphSeries<>(fearArray);
+                        fearSeries.setTitle("Fear");
+                        fearSeries.setColor(Color.parseColor("#4CAF50"));
+                        fearSeries.setDrawDataPoints(true);
+                        fearSeries.setDataPointsRadius(6);
+                        fearSeries.setThickness(4);
+
+
+                        JSONArray sadness = resValues.getJSONArray("sadness");
+
+                        DataPoint sadnessArray[] = new DataPoint[anger.length()];
+                        for (int i = 0; i < sadness.length(); i++) {
+                            sadnessArray[i] = new DataPoint(i+1,Double.parseDouble(anger.getString(i)));
+                        }
+
+                        sadnessSeries = new LineGraphSeries<>(sadnessArray);
+                        sadnessSeries.setTitle("Sadness");
+                        sadnessSeries.setColor(Color.parseColor("#0D47A1"));
+                        sadnessSeries.setDrawDataPoints(true);
+                        sadnessSeries.setDataPointsRadius(6);
+                        sadnessSeries.setThickness(4);
+
+
+                        graph.addSeries(angerSeries);
+                        graph.addSeries(joySeries);
+                        graph.addSeries(fearSeries);
+                        graph.addSeries(sadnessSeries);
+                    }
+
+                    catch (JSONException e)
+                    {
+                        e.printStackTrace();
+                    }
+
+                }
+                // Log.d("Success",response.body().string());
+
+            }
+        });
+
+
+
+    }
+
+
 }
+
 
 
