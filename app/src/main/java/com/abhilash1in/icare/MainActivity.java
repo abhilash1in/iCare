@@ -11,6 +11,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.DatePicker;
 
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,DatePickerDialog.OnDateSetListener,
          DialogFragmentClass.DoctorRequestListener{
 
+    int flag=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,8 +77,16 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_calendar) {
+        if (id == R.id.action_calendar_prev) {
             datePicker();
+            flag=1;
+            return true;
+        }
+
+        if(id==R.id.action_calendar_insights)
+        {
+            datePicker();
+            flag=2;
             return true;
         }
 
@@ -93,10 +103,17 @@ public class MainActivity extends AppCompatActivity
     public void onDateSet(DatePicker view, int year, int month, int day) {
 
         String date = setDateFormat(year, month, day);
-        Intent intent2 = new Intent();
-        intent2.setClass(this, ViewEntryActivity.class);
-        intent2.putExtra("date", date);
-        startActivity(intent2);
+        if(flag==1)
+        {
+            Intent intent2 = new Intent();
+            intent2.setClass(this, ViewEntryActivity.class);
+            intent2.putExtra("date", date);
+            startActivity(intent2);
+        }
+       else
+        {
+            Log.d("trial","else part");
+        }
     }
 
     String setDateFormat(int year, int month, int day)
