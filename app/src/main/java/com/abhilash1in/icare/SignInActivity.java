@@ -51,6 +51,7 @@ public class SignInActivity extends AppCompatActivity implements
 
     ProgressDialog progressDialog;
 
+    String email;
     SharedPreferences pref;
     SharedPreferences.Editor editor;
 
@@ -186,6 +187,9 @@ public class SignInActivity extends AppCompatActivity implements
             case R.id.email_sign_in_button:
                 Intent intent2 = new Intent();
                 intent2.setClass(SignInActivity.this, MainActivity.class);
+                email = mEmailField.getText().toString();
+                intent2.putExtra("email", email);
+                intent2.putExtra("name", " ");
                 startActivity(intent2);
                 break;
                 //signIn(mEmailField.getText().toString(), mPasswordField.getText().toString());

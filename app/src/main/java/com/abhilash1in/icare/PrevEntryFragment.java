@@ -15,6 +15,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -84,7 +87,18 @@ public class PrevEntryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        String[] days = { "Saturday", "Friday", "Thursday", "Wednesday", "Tuesday", "Monday", "Sunday"};
+
+        String[] days =  new String[7];
+
+        for ( int i = 0 ; i < 7; i++){
+            Calendar cal = Calendar.getInstance();
+            cal.add(Calendar.DATE, -i);
+            SimpleDateFormat df = new SimpleDateFormat("EEEE , d MMMM yyyy");
+            days[i] = df.format(cal.getTime());
+        }
+
+
+        // String[] days = { "Saturday", "Friday", "Thursday", "Wednesday", "Tuesday", "Monday", "Sunday"};
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_prev_entry, container, false);
         // The adapter is initialised with department names

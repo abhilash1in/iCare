@@ -13,10 +13,7 @@
 
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true"
-    tools:context=".MainActivity"
->
-
-
+    tools:context=".MainActivity">
 
     <TextView
         android:layout_width="match_parent"
@@ -69,4 +66,4 @@
 
 </RelativeLayout>
 
-    </FrameLayout>
+</FrameLayout>

@@ -28,7 +28,7 @@ public class NewSignUpActivity extends AppCompatActivity implements
     private static final String TAG = "EmailPassword";
 
     private EditText mEmailField;
-    private EditText mPasswordField;
+    private EditText mNameField;
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -36,6 +36,7 @@ public class NewSignUpActivity extends AppCompatActivity implements
     private DatabaseReference mDatabase;
     private FirebaseUser user;
 
+    String name, email;
     ProgressDialog progressDialog;
     SharedPreferences pref;
     SharedPreferences.Editor editor;
@@ -49,10 +50,11 @@ public class NewSignUpActivity extends AppCompatActivity implements
 
         // Views
         mEmailField = (EditText) findViewById(R.id.field_email);
-        mPasswordField = (EditText) findViewById(R.id.field_password);
+        mNameField = (EditText) findViewById(R.id.field_name);
 
         // Buttons
         findViewById(R.id.email_create_account_button).setOnClickListener(this);
+
 
       /*  mAuth = FirebaseAuth.getInstance();
 
@@ -115,6 +117,11 @@ public class NewSignUpActivity extends AppCompatActivity implements
     public void onClick(View v) {
         Intent intent = new Intent();
         intent.setClass(NewSignUpActivity.this, MainActivity.class);
+        email = mEmailField.getText().toString();
+        name = mNameField.getText().toString();
+
+        intent.putExtra("name", name);
+        intent.putExtra("email", email);
         startActivity(intent);
         //createAccount(mEmailField.getText().toString(), mPasswordField.getText().toString());
     }
