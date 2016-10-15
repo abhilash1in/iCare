@@ -138,7 +138,7 @@ public class NoteFragment extends Fragment {
     public void writeToDB()throws Exception {
 
             RequestBody formBody = new FormEncodingBuilder()
-                    .add("usedid", MainActivity.email )
+                    .add("user_id", MainActivity.email )
                     .add("payload", data)
                     .add("day", "" + dd)
                     .add("month", "" + mm)
@@ -152,13 +152,13 @@ public class NoteFragment extends Fragment {
             client.newCall(request).enqueue(new Callback() {
                 @Override
                 public void onFailure(Request request, IOException e) {
-                    System.out.println("Failed: "+e.getMessage());
+                    Log.d("Failed", e.getMessage());
                 }
 
                 @Override
                 public void onResponse(Response response) throws IOException {
                     if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
-                    System.out.println(response.body().string());
+                    Log.d("Success", response.body().string());
                 }
             });
 
