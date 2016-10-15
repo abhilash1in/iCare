@@ -6,12 +6,6 @@ import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.View;
-import android.support.design.widget.NavigationView;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -20,8 +14,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -29,12 +21,14 @@ import java.util.Calendar;
 
 // Main
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,DatePickerDialog.OnDateSetListener,
-         DialogFragmentClass.DoctorRequestListener{
+        implements NavigationView.OnNavigationItemSelectedListener,DatePickerDialog.OnDateSetListener{
+         //DialogFragmentClass.DoctorRequestListener
 
     int flag=0;
+
     TextView nameTextView, emailTextView;
     public static String email;
+    static final String TAG="MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,11 +41,12 @@ public class MainActivity extends AppCompatActivity
         String name = getIntent().getExtras().getString("name");
         email = getIntent().getExtras().getString("email");
 
+
         Log.d("main" , name + " " + email);
 
-        DialogFragment newFragment = new DialogFragmentClass();
+      /*  DialogFragment newFragment = new DialogFragmentClass();
         newFragment.show(getSupportFragmentManager(), "region");
-        newFragment.setCancelable(false);
+        newFragment.setCancelable(false);*/
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_main, new NoteFragment() ).commit();
@@ -71,6 +66,8 @@ public class MainActivity extends AppCompatActivity
 
         nameTextView.setText(name);
         emailTextView.setText(email);
+
+
     }
 
     @Override
@@ -182,7 +179,7 @@ public class MainActivity extends AppCompatActivity
         return date;
     }
 
-    @Override
+    /*@Override
     public void onDialogPositiveClick(DialogFragment dialog) {
 
     }
@@ -190,5 +187,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onDialogNegativeClick(DialogFragment dialog) {
 
-    }
+    }*/
+
+
 }

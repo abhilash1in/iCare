@@ -4,23 +4,25 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.FormEncodingBuilder;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
 
-import java.util.HashMap;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 
 public class NewSignUpActivity extends AppCompatActivity implements
         View.OnClickListener {
@@ -40,7 +42,7 @@ public class NewSignUpActivity extends AppCompatActivity implements
     ProgressDialog progressDialog;
     SharedPreferences pref;
     SharedPreferences.Editor editor;
-
+    OkHttpClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,7 @@ public class NewSignUpActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_new_sign_up);
         progressDialog = new ProgressDialog(NewSignUpActivity.this);
 
+        Log.d(TAG," sign up");
         // Views
         mEmailField = (EditText) findViewById(R.id.field_email);
         mNameField = (EditText) findViewById(R.id.field_name);
@@ -55,22 +58,8 @@ public class NewSignUpActivity extends AppCompatActivity implements
         // Buttons
         findViewById(R.id.email_create_account_button).setOnClickListener(this);
 
+        client = new OkHttpClient();
 
-      /*  mAuth = FirebaseAuth.getInstance();
-
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // User is signed in
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                } else {
-                    // User is signed out
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
-                }
-            }
-        };*/
     }
 
     @Override
@@ -89,28 +78,6 @@ public class NewSignUpActivity extends AppCompatActivity implements
 
 
 
-    // Checking if username and password are entered
-   /* private boolean validateForm() {
-        boolean valid = true;
-
-        String email = mEmailField.getText().toString();
-        if (TextUtils.isEmpty(email)) {
-            mEmailField.setError("Required.");
-            valid = false;
-        } else {
-            mEmailField.setError(null);
-        }
-
-        String password = mPasswordField.getText().toString();
-        if (TextUtils.isEmpty(password)) {
-            mPasswordField.setError("Required.");
-            valid = false;
-        } else {
-            mPasswordField.setError(null);
-        }
-
-        return valid;
-    }*/
 
     // On clicking sign up button, the account is created (Added to database)
     @Override
@@ -120,6 +87,13 @@ public class NewSignUpActivity extends AppCompatActivity implements
         email = mEmailField.getText().toString();
         name = mNameField.getText().toString();
 
+        try {
+            writeToDB();
+        } catch (Exception e) {
+            Log.d(TAG," catch block");
+            e.printStackTrace();
+        }
+
         intent.putExtra("name", name);
         intent.putExtra("email", email);
         startActivity(intent);
@@ -127,4 +101,60 @@ public class NewSignUpActivity extends AppCompatActivity implements
     }
 
 
+    public void writeToDB()throws Exception {
+
+        RequestBody formBody = new FormEncodingBuilder()
+                .add("user_id", email )
+                .add("name",name)
+                .build();
+        Request request = new Request.Builder()
+                .url("http://tedxmsrit2016.in:3000/init")
+                .post(formBody)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Request request, IOException e) {
+                Log.d("Failed", e.getMessage());
+            }
+
+            @Override
+            public void onResponse(Response response) throws IOException {
+                Log.d(TAG,"on response");
+                if (!response.isSuccessful())
+                    Log.v("error","Code: "+response.code()+", Error message: "+response.message());
+                else
+                {
+                  /*  ToastHandler mToastHandler = new ToastHandler(getApplicationContext());
+                    mToastHandler.showToast("Registered!", Toast.LENGTH_SHORT);
+                   */
+                    /*
+                     new NewSignUpActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(NewSignUpActivity.this, "Registered!", Toast.LENGTH_SHORT).show();
+                        }
+                    });*/
+                    String JsonString=response.body().string();
+                    Log.d(TAG,"Success"+ JsonString);
+                    try
+                    {
+                        JSONObject responseJsonObject=new JSONObject(JsonString);
+                        Log.d(TAG," json object status"+ responseJsonObject.getString("status"));
+                    }
+
+                    catch (JSONException e)
+                    {
+                        e.printStackTrace();
+                    }
+
+                }
+                // Log.d("Success",response.body().string());
+
+            }
+        });
+
+
+
+    }
 }
