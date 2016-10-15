@@ -20,6 +20,9 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.text.DateFormatSymbols;
 import java.util.Calendar;
@@ -38,6 +41,7 @@ public class NoteFragment extends Fragment {
     String data;
     OkHttpClient client;
     static final String TAG="NoteFragment";
+    public Double anger,disgust,fear,joy,sadness;
     public NoteFragment() {
         // Required insights public constructor
     }
@@ -157,8 +161,39 @@ public class NoteFragment extends Fragment {
 
                 @Override
                 public void onResponse(Response response) throws IOException {
-                    if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
-                    Log.d("Success", response.body().string());
+                    Log.d(TAG,"on response");
+                    if (!response.isSuccessful())
+                        Log.v("error","Code: "+response.code()+", Error message: "+response.message());
+                    else
+                    {
+                        String JsonString=response.body().string();
+                        Log.d("Success", JsonString);
+                        try
+                        {
+                            JSONObject responseJsonObject=new JSONObject(JsonString);
+                            Log.d(TAG,"response jscon object : "+responseJsonObject);
+                            String analysisJsonString=responseJsonObject.getString("analysis");
+                            JSONObject analysisJSONObject=new JSONObject(analysisJsonString);
+                            Log.d("Analysis json :",analysisJSONObject.toString());
+                            String emotionString=analysisJSONObject.getString("docEmotions");
+                            Log.d("Emotions json :",emotionString);
+                            JSONObject emotionJSONObject=new JSONObject(emotionString);
+                            anger=emotionJSONObject.getDouble("anger");
+                            disgust=emotionJSONObject.getDouble("disgust");
+                            fear=emotionJSONObject.getDouble("fear");
+                            joy=emotionJSONObject.getDouble("joy");
+                            sadness=emotionJSONObject.getDouble("sadness");
+                            Log.d(TAG,"anger "+anger.toString());
+                        }
+
+                        catch (JSONException e)
+                        {
+                            e.printStackTrace();
+                        }
+
+                    }
+                   // Log.d("Success",response.body().string());
+
                 }
             });
 
