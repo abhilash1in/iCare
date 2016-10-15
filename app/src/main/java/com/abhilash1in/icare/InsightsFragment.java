@@ -65,7 +65,7 @@ public class InsightsFragment extends Fragment {
         graph.getGridLabelRenderer().setVerticalAxisTitle("Percentage of Emotion");
         graph.getGridLabelRenderer().setNumVerticalLabels(6);
         graph.getGridLabelRenderer().setNumHorizontalLabels(8);
-
+        graph.getGridLabelRenderer().setPadding(5);
 
         /*graph.getViewport().setScrollable(true); // enables horizontal scrolling
         graph.getViewport().setScrollableY(true); // enables vertical scrolling
