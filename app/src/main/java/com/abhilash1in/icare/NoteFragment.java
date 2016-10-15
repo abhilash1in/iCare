@@ -42,10 +42,10 @@ public class NoteFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_note, container, false);
-
         bodyEditText=(EditText)view.findViewById(R.id.bodyEdit);
         dateTextView=(TextView)view.findViewById(R.id.dateTextView);
         bodyEditText.requestFocus();
+        //bodyEditText.setBackgroundColor(R.color.yellow);
 
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
