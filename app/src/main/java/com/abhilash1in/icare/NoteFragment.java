@@ -13,6 +13,14 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.FormEncodingBuilder;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
+
+import java.io.IOException;
 import java.text.DateFormatSymbols;
 import java.util.Calendar;
 
@@ -27,6 +35,8 @@ public class NoteFragment extends Fragment {
     TextView dateTextView;
     int yy,mm,dd,dayNum;
     String day;
+    String data;
+    OkHttpClient client;
     static final String TAG="NoteFragment";
     public NoteFragment() {
         // Required empty public constructor
@@ -47,19 +57,26 @@ public class NoteFragment extends Fragment {
         dateTextView=(TextView)view.findViewById(R.id.dateTextView);
         bodyEditText.requestFocus();
 
+
+       client = new OkHttpClient();
+
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view,"Diary entry saved!",Snackbar.LENGTH_LONG).setAction("Action",null).show();
-                String data = bodyEditText.getText().toString();
-                writeToDB();
 
                 Log.d(TAG," data entered : "+bodyEditText.getText().toString());
                 if(!bodyEditText.getText().toString().equals(""))
                 {
                     Snackbar.make(view,"Diary entry saved!",Snackbar.LENGTH_LONG).setAction("Action",null).show();
-                    String data=bodyEditText.getText().toString();
+                    data = bodyEditText.getText().toString();
+                    try {
+                        writeToDB();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
                 }
 
                 else
@@ -112,14 +129,42 @@ public class NoteFragment extends Fragment {
        dateTextView.setText(new StringBuilder()
                 // Month is 0 based, just add 1
                 .append(day).append(" , ").append(dd).append(" ").append(monthName).append(" ").append(yy).append(" :")
-                .append(day).append(", ").append(dd).append("th ").append(monthName).append(" ").append(yy).append(" :")
                 );
 
 
         return view;
     }
 
-    public void writeToDB(){
+    public void writeToDB()throws Exception {
+
+            RequestBody formBody = new FormEncodingBuilder()
+                    .add("usedid", MainActivity.email )
+                    .add("payload", data)
+                    .add("day", "" + dd)
+                    .add("month", "" + mm)
+                    .add("year", "" + yy)
+                    .build();
+            Request request = new Request.Builder()
+                    .url("http://tedxmsrit2016.in:3000/post")
+                    .post(formBody)
+                    .build();
+
+            client.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Request request, IOException e) {
+                    System.out.println("Failed: "+e.getMessage());
+                }
+
+                @Override
+                public void onResponse(Response response) throws IOException {
+                    if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+                    System.out.println(response.body().string());
+                }
+            });
+
+
+
+        }
 
     }
-}
+

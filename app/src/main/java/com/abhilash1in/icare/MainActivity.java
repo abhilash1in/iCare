@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity
          DialogFragmentClass.DoctorRequestListener{
 
     TextView nameTextView, emailTextView;
-    public String email;
+    public static String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
